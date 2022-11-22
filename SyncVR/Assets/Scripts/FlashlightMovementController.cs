@@ -9,10 +9,10 @@ public class FlashlightMovementController : MonoBehaviour
     [SerializeField] private Transform _centerOfRotation;
     [SerializeField] private GameObject _visibilityMask;
 
-
+ 
 
     void Update()
-    {
+    {  
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePosition.z = Camera.main.transform.position.z + Camera.main.nearClipPlane;
 
@@ -23,4 +23,6 @@ public class FlashlightMovementController : MonoBehaviour
         float angle = Vector2.SignedAngle(Vector2.right, direction);
         _flashlight.rotation = Quaternion.Euler(0, 0, angle);
     }
+
+   
 }

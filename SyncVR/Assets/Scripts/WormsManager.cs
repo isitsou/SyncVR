@@ -4,17 +4,6 @@ using UnityEngine;
 using UnityEngine.Events;
 
 
-//public struct Worm
-//{
-//    public GameObject _myGameObject;
-//    public bool _isAlive;
-//    public Worm(GameObject myGameObject, bool isAlive)
-//    {
-//        _myGameObject = myGameObject;
-//        _is
-//    }
-
-//}
 public class WormsManager : MonoBehaviour
 {
     [SerializeField] private PluckingController _pluckingController;
@@ -37,8 +26,7 @@ public class WormsManager : MonoBehaviour
         {
             worms[i] = transform.GetChild(i).gameObject;
             worms[i].SetActive(false);
-        }
-        ActivateWormByIndex(0);
+        }        
     }
 
     public void ActivateWormByIndex(int wormIndex) => worms[wormIndex].SetActive(true);
@@ -52,5 +40,6 @@ public class WormsManager : MonoBehaviour
         if (nextWormIndex == worms.Length) AllWormsPluckedOut.Invoke();
         else ActivateWormByIndex(nextWormIndex);
     }
-   
+    public int GetNumberOfWormsPlucked() => _currentWorm;
+    
 }
