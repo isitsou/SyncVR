@@ -11,6 +11,7 @@ public class WormController : MonoBehaviour
     {
         _pluckingController.Plucking.AddListener(()=>myAnimator.Play("Plucking"));
         _pluckingController.PluckedOut.AddListener(()=>myAnimator.Play("Plucked Out"));
+        _pluckingController.PluckedOut.AddListener(()=>GetComponent<Collider2D>().enabled = false);
     }
   
 }
