@@ -5,13 +5,24 @@ using UnityEngine;
 public class WormController : MonoBehaviour
 {
     [Header("Cached Refs")]
-    [SerializeField] private PluckingController _pluckingController;
+    [SerializeField] private PullingWormsController _pluckingController;
     [SerializeField] private Animator myAnimator;
     void OnEnable()
     {
-        _pluckingController.Plucking.AddListener(()=>myAnimator.Play("Plucking"));
-        _pluckingController.PluckedOut.AddListener(()=>myAnimator.Play("Plucked Out"));
-        _pluckingController.PluckedOut.AddListener(()=>GetComponent<Collider2D>().enabled = false);
+        _pluckingController.Pulling.AddListener(PlayPullingAnim);
+        _pluckingController.PulledOut.AddListener(PlayPulledOutAnim);              
     }
-  
+
+    //Disables itself at the end of the pulled out animation
+    public void DisableMe() => this.gameObject.SetActive(false);
+
+    private void PlayPullingAnim() => myAnimator.Play("Pulling");
+    private void PlayPulledOutAnim() => myAnimator.Play("Pulled Out");
+    
+    private void OnDisable()
+    {
+        _pluckingController.Pulling.RemoveListener(PlayPullingAnim);
+        _pluckingController.PulledOut.RemoveListener(PlayPulledOutAnim);
+    }
+
 }

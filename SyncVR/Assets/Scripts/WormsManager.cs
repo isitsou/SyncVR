@@ -6,9 +6,9 @@ using UnityEngine.Events;
 
 public class WormsManager : MonoBehaviour
 {
-    [SerializeField] private PluckingController _pluckingController;
+    [SerializeField] private PullingWormsController _pluckingController;
 
-    public UnityEvent AllWormsPluckedOut;
+    public UnityEvent AllWormsPulledOut;
 
     private GameObject[] worms;
     private int _currentWorm;
@@ -16,7 +16,7 @@ public class WormsManager : MonoBehaviour
     void Start()
     {
         InitializeWorms();
-        AllWormsPluckedOut.AddListener(() => Debug.Log("All worms plucked out"));
+        AllWormsPulledOut.AddListener(() => Debug.Log("All worms plucked out"));
     }
 
     private void InitializeWorms()
@@ -32,12 +32,12 @@ public class WormsManager : MonoBehaviour
     public void ActivateWormByIndex(int wormIndex) => worms[wormIndex].SetActive(true);
    
 
-    public void PluckOutWorm()
+    public void PullOutWorm()
     {
         _currentWorm++;
         int nextWormIndex = _currentWorm;
 
-        if (nextWormIndex == worms.Length) AllWormsPluckedOut.Invoke();
+        if (nextWormIndex == worms.Length) AllWormsPulledOut.Invoke();
         else ActivateWormByIndex(nextWormIndex);
     }
     public int GetNumberOfWormsPlucked() => _currentWorm;

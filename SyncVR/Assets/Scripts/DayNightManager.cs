@@ -1,24 +1,27 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class DayNightManager : MonoBehaviour
 {
     [Header("Cached Refs")]
     [SerializeField] private GameManager _gameManager;
+    [SerializeField] private GameplayManager _GPM;
     [SerializeField] private Light2D _globalLight;   
     [SerializeField] private Image _clockPointer;
     [SerializeField] private Image _clockBackground;
 
    
 
-    private int _dayDuration = 7; // GPM
-    private int _nightDuration = 5; // GPM
+    private int _dayDuration; 
+    private int _nightDuration;
 
-   
+    private void Start()
+    {
+        _dayDuration = _GPM.DayDuration;
+        _nightDuration = _GPM.NightDuration;
+    }
 
     public void StartDayNight()
     {
@@ -42,12 +45,10 @@ public class DayNightManager : MonoBehaviour
         float fadeLightDuration = 1.5f;
 
         yield return new WaitForSeconds(_dayDuration-fadeLightDuration);        
-        StartCoroutine(FadeLight(_globalLight, 0.5f, fadeLightDuration));
+        StartCoroutine(FadeLight(_globalLight, 0.4f, fadeLightDuration));
 
-        yield return new WaitForSeconds(_nightDuration-fadeLightDuration);        
-        StartCoroutine(FadeLight(_globalLight, 0.2f, fadeLightDuration));
-
-        yield return new WaitForSeconds(fadeLightDuration);
+        yield return new WaitForSeconds(_nightDuration);        
+        StartCoroutine(FadeLight(_globalLight, 1f, fadeLightDuration));        
 
         _gameManager.EndSession();
     }
