@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
 
     private Color _visible = new Color(1, 1, 1, 1);
     private Color _transparent = new Color(1, 1, 1, 0);
+    private Color _transparentLetters = new Color(0, 0, 0, 0);
 
 
     //private void Start()
@@ -30,11 +31,11 @@ public class GameManager : MonoBehaviour
     public void StartSession()
     {
         GameSessionStarts.Invoke();
-
-        StartCoroutine(FadeImage(_panel, _transparent, 0.7f));
-        StartCoroutine(FadeImage(_descriptionClock, _transparent, 0.7f));
-        StartCoroutine(FadeImage(_descriptionClockPointer, _transparent, 0.7f));
-        StartCoroutine(FadeText(_description, _transparent, 0.7f));
+        float fadeDuration = 0.6f;
+        StartCoroutine(FadeImage(_panel, _transparent, fadeDuration));
+        StartCoroutine(FadeImage(_descriptionClock, _transparent, fadeDuration));
+        StartCoroutine(FadeImage(_descriptionClockPointer, _transparent, fadeDuration));
+        StartCoroutine(FadeText(_description, _transparentLetters, fadeDuration));
     }
     public void EndSession() => GameSessionEnds.Invoke();
 

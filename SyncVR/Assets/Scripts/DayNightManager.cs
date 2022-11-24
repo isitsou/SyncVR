@@ -19,8 +19,8 @@ public class DayNightManager : MonoBehaviour
 
     private void Start()
     {
-        _dayDuration = _GPM.DayDuration;
-        _nightDuration = _GPM.NightDuration;
+        _dayDuration = _GPM.GetDayDuration();
+        _nightDuration = _GPM.GetNightDuration();
     }
 
     public void StartDayNight()

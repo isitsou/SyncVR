@@ -29,9 +29,9 @@ public class PullingWormsController : MonoBehaviour
     }
     private void Start()
     {
-        _maxValueOfPullSlider = _GPM.MaxValueOfPull;
-        _reducingRatePullSlider = _GPM.ReducingRatePull;
-        _stepIncreasePullSlider = _GPM.StepIncreasePull;
+        _maxValueOfPullSlider = _GPM.GetMaxValueOfPull();
+        _reducingRatePullSlider = _GPM.GetReducingRatePull();
+        _stepIncreasePullSlider = _GPM.GetStepIncreasePull();
 
         _plucking.maxValue = _maxValueOfPullSlider;
     }
