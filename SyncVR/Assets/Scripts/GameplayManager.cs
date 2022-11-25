@@ -1,12 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-
-
 /// <summary>
-/// This script helps on managing multiple variables on the game in one place in order to make the 
-/// balacing process of the game easier and faster.
+/// This scriptable object contains almost all of the values that effect the "play experience". 
+/// It is created for convenience because everything is one place and that makes playtesting easy and fast.
 /// </summary>
 [CreateAssetMenu(menuName = "GameplayManager", fileName = "GameplayManager", order = 51)]
 public class GameplayManager : ScriptableObject
@@ -26,8 +22,8 @@ public class GameplayManager : ScriptableObject
     [Tooltip("Every time the player hits leftclick on a worm the slider value is increased by this step")]
     [SerializeField] private float _reducingRatePull = 0.5f;
 
-    [SerializeField] private int _numberOfWormsToWin = 10;
-
+    [Tooltip("Number of active worms in the scene. Every time the player pulls out a worm another will replace it on another position.")]
+    [SerializeField] private int _numberOfActiveWorms = 5;
 
     //Getters
     public int GetDayDuration() => _dayDuration;
@@ -35,5 +31,6 @@ public class GameplayManager : ScriptableObject
     public float GetStepIncreasePull() => _stepIncreasePull;
     public float GetMaxValueOfPull() => _maxValueOfPull;
     public float GetReducingRatePull() => _reducingRatePull;
-    public int GetNumberOfWormsToWin() => _numberOfWormsToWin;
+    public int GetNumberOfActiveWorms() => _numberOfActiveWorms;
+ 
 }

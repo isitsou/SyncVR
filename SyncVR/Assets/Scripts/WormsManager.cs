@@ -1,71 +1,72 @@
-using System;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.UI;
 
-
+/// <summary>
+/// This manager is responsible for counting how many worms the user has pulled out. Also,
+/// when one is pulled out another is being created in order to have a consistant number
+/// of worms active in the scene.
+/// </summary>
 public class WormsManager : MonoBehaviour
 {
+    [Header("Cached Refs")]
     [SerializeField] private GameplayManager _GPM;
     [SerializeField] private GameObject _wormPrefab;
-    [SerializeField] private PullingWormsController _pullingWormsController;
     [SerializeField] private Transform[] _wormsPositions;
-    [SerializeField] private Image[] _wormsScreen;
 
-    public UnityEvent AllWormsPulledOut;
+    private int _currentWormCounter;
+    private int _numberOfActiveWorms;
 
-    private Color _visible = new Color(1, 1, 1, 1);
-    private int _currentWorm;
-    private int _numberOfWormsToWin;
-    private int _previousPosIndex = 0;
+    public int GetNumberOfWormsPulledOut() => _currentWormCounter;
 
-    void Start()
+    private void Start()
     {
-        _numberOfWormsToWin = _GPM.GetNumberOfWormsToWin();
+        _numberOfActiveWorms = _GPM.GetNumberOfActiveWorms();
 
-        AllWormsPulledOut.AddListener(() => Debug.Log("All worms pulled out"));
+        if (_numberOfActiveWorms > _wormsPositions.Length - 1)
+        {
+            Debug.LogError("At least one spawn position should be available!");
+        }
+
+        InitializeWormsInScene();
     }
 
-
-    public void InitializeWormsScreen()
+    private void InitializeWormsInScene()
     {
-        for (int i = 0; i < _numberOfWormsToWin; i++)
+        for (int i = 0; i < _numberOfActiveWorms; i++)
         {
-            _wormsScreen[i].enabled = true;
+            GameObject worm = Instantiate(_wormPrefab, _wormsPositions[i]);
+            SubscribeToWormPulledOutEvent(worm);
         }
     }
 
-    public void SpawnWorm()
+    private void AddPulledOutWormsCounter()
     {
-        int randomPosIndex = CreateRandomPosIndex();
-
-        WormHandler worm = Instantiate(_wormPrefab, _wormsPositions[randomPosIndex]).GetComponent<WormHandler>();
-        WormHandler worm0 = Instantiate(_wormPrefab, _wormsPositions[randomPosIndex]).GetComponent<WormHandler>();
-        worm.SetPullingController(_pullingWormsController);
-        worm0.SetPullingController(_pullingWormsController);
+        _currentWormCounter++;
+    }
+    private void SpawnWorms()
+    {
+        Transform nextAvailablePos = GetNextAvailableSpawnPos();
+        GameObject worm = Instantiate(_wormPrefab, nextAvailablePos);
+        SubscribeToWormPulledOutEvent(worm);
     }
 
-    private int CreateRandomPosIndex()
+    private void SubscribeToWormPulledOutEvent(GameObject spawnedWorm)
     {
-        int randomPosIndex = UnityEngine.Random.Range(0, _wormsPositions.Length);
-        if (randomPosIndex == _previousPosIndex) randomPosIndex = UnityEngine.Random.Range(0, _wormsPositions.Length);
-        else _previousPosIndex = randomPosIndex;
-        return randomPosIndex;
+        WormController spawnedWormHandler = spawnedWorm.GetComponent<WormController>();
+        spawnedWormHandler.WormPulledOut.AddListener(AddPulledOutWormsCounter);
+        spawnedWormHandler.WormPulledOut.AddListener(SpawnWorms);
     }
 
-    public void PullOutWorm()
+    //Cycles consecutively through all the positions in the _wormsPositions array and return the next available 
+    private Transform GetNextAvailableSpawnPos()
     {
-        _wormsScreen[_currentWorm].color = _visible;
+        int currentSpawnPosIndex = _currentWormCounter % _wormsPositions.Length; 
 
-        _currentWorm++;
-        int nextWormIndex = _currentWorm;
+        int nextSpawnPosIndex = currentSpawnPosIndex + _numberOfActiveWorms-1;
 
-        if (nextWormIndex == _numberOfWormsToWin) AllWormsPulledOut.Invoke();
-        else SpawnWorm();
+        nextSpawnPosIndex %= _wormsPositions.Length; 
+
+        return _wormsPositions[nextSpawnPosIndex];
     }
 
-    public int GetNumberOfWormsPlucked() => _currentWorm;
-
-    
 
 }

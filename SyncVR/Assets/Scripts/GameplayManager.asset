@@ -12,3 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da9d40fb86ad51f4eaefcdc9a6d02a2c, type: 3}
   m_Name: GameplayManager
   m_EditorClassIdentifier: 
+  _dayDuration: 40
+  _nightDuration: 20
+  _stepIncreasePull: 3
+  _maxValueOfPull: 10
+  _reducingRatePull: 5
+  _numberOfActiveWorms: 5
