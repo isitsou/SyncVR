@@ -16,7 +16,7 @@ Recommended resolution: 1920x1080
 
 
 
-This is casual game in which the player is trying to save an apple tree. It does that by navigating on it with the mouse and removing worms with left-click.
+This is a casual game in which the player is trying to save an apple tree. It does that by navigating on it with the mouse and removing worms with left-click.
 
 The player removes worms by repeatedly clicking on them, until a UI-bar is filled. This rapid and repeated clicking is
 implemented intentionally because you want the user to engage actively and distract himself from the medical procedure.
